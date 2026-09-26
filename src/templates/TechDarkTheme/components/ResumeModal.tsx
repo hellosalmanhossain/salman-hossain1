@@ -3,10 +3,17 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { X, Download, ZoomIn, ZoomOut } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export function ResumeModal({ url, onClose }: { url: string, onClose: () => void }) {
   const [scale, setScale] = useState(1);
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const isCloudinaryPdf = url.includes('cloudinary.com') && url.endsWith('.pdf');
   // By changing .pdf to .png, cloudinary automatically returns the first page of the pdf as an image
   const imageUrl = isCloudinaryPdf ? url.replace('.pdf', '.png') : url;
@@ -16,7 +23,9 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
     setScale(prev => Math.min(Math.max(0.5, prev - e.deltaY * 0.005), 4));
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -27,7 +36,7 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="relative w-full max-w-5xl h-[95vh] sm:h-[90vh] bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col"
+        className="relative w-[90vw] max-w-[1400px] h-[95vh] sm:h-[90vh] bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col rounded-3xl"
       >
         {/* Header Bar */}
         <div className="flex items-center justify-between p-3 sm:p-4 border-b border-black/10 dark:border-white/10 bg-gray-100 dark:bg-[#151515] z-10">
@@ -64,8 +73,7 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
           {isCloudinaryPdf ? (
             <motion.div
               drag
-              dragConstraints={{ left: -1000, right: 1000, top: -1000, bottom: 1000 }}
-              dragElastic={0.1}
+              dragMomentum={false}
               style={{ scale }}
               className="relative w-full max-w-[800px] h-[80%] sm:h-full sm:aspect-[1/1.414] shadow-2xl pointer-events-auto origin-center"
             >
@@ -83,6 +91,7 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
           )}
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }
