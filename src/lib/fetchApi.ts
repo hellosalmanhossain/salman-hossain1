@@ -74,6 +74,7 @@ export const fetchApi = (async (endpoint: string, options: FetchOptions = {}): P
   }
 
   const config: RequestInit = {
+    cache: 'no-store',
     ...restOptions,
     headers: configHeaders,
   };
