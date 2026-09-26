@@ -28,7 +28,8 @@ export default function Blog() {
 
   return (
     <section id="blog" className="w-full bg-transparent py-20 relative z-10 overflow-x-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-16">
+      <div className="w-full px-6 sm:px-10 lg:px-16 z-10 relative">
+        <div className="max-w-[1400px] mx-auto w-full">
         
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="flex flex-col gap-2">
@@ -86,6 +87,7 @@ export default function Blog() {
           ))}
         </motion.div>
 
+        </div>
       </div>
     </section>
   );
