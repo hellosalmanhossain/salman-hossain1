@@ -20,7 +20,7 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
     let timeoutId: NodeJS.Timeout;
 
     if (show) {
-      if (videoEnded && !isLoading) {
+      if (!isLoading) {
         setShow(false);
         onLoadingComplete();
       }
@@ -36,7 +36,7 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [videoEnded, isLoading, show, onLoadingComplete]);
+  }, [isLoading, show, onLoadingComplete]);
 
   if (!show) return null;
 
@@ -53,7 +53,6 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
             <video
               src="/logo-video.mp4"
               autoPlay
-              muted
               playsInline
               onEnded={() => setVideoEnded(true)}
               className="w-full h-full object-contain"
