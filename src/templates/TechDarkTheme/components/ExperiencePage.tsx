@@ -132,7 +132,7 @@ export default function ExperiencePage() {
                         <div className="absolute left-[11px] sm:left-1/2 w-8 h-8 rounded-none bg-black dark:bg-white border-2 border-white dark:border-[#0A0A0A] sm:-translate-x-1/2 z-10 flex items-center justify-center text-white dark:text-black shadow-lg">
                           <Briefcase className="w-4 h-4" />
                         </div>
-                        <div className={`ml-16 sm:ml-0 w-full sm:w-[calc(50%-3rem)] ${isEven ? 'sm:pr-12 sm:text-right' : 'sm:pl-12 text-left'}`}>
+                        <div className={`ml-16 sm:ml-0 w-[calc(100%-4rem)] sm:w-[calc(50%-3rem)] ${isEven ? 'sm:pr-12 sm:text-right' : 'sm:pl-12 text-left'}`}>
                           <div className="bg-black/5 dark:bg-white/5 backdrop-blur-md p-8 sm:p-10 rounded-none border border-black/10 dark:border-white/10 shadow-lg hover:bg-black/10 dark:hover:bg-white/10 transition-colors duration-300 group">
                             <div className={`flex items-center gap-2 mb-4 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors ${isEven ? 'sm:justify-end' : 'justify-start'}`}>
                               <Calendar className="w-4 h-4" />
@@ -174,7 +174,7 @@ export default function ExperiencePage() {
                         <div className="absolute left-[11px] sm:left-1/2 w-8 h-8 rounded-none bg-black dark:bg-white border-2 border-white dark:border-[#0A0A0A] sm:-translate-x-1/2 z-10 flex items-center justify-center text-white dark:text-black shadow-lg">
                           <GraduationCap className="w-4 h-4" />
                         </div>
-                        <div className={`ml-16 sm:ml-0 w-full sm:w-[calc(50%-3rem)] ${isEven ? 'sm:pr-12 sm:text-right' : 'sm:pl-12 text-left'}`}>
+                        <div className={`ml-16 sm:ml-0 w-[calc(100%-4rem)] sm:w-[calc(50%-3rem)] ${isEven ? 'sm:pr-12 sm:text-right' : 'sm:pl-12 text-left'}`}>
                           <div className="bg-black/5 dark:bg-white/5 backdrop-blur-md p-8 sm:p-10 rounded-none border border-black/10 dark:border-white/10 shadow-lg hover:bg-black/10 dark:hover:bg-white/10 transition-colors duration-300 group">
                             <div className={`flex items-center gap-2 mb-4 text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors ${isEven ? 'sm:justify-end' : 'justify-start'}`}>
                               <Calendar className="w-4 h-4" />
