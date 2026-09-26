@@ -25,13 +25,13 @@ const DefaultIcon = ({ className }: { className?: string }) => (
   <ExternalLink className={className} />
 );
 
-import { ResumeModal } from "./ResumeModal";
+import { ResumeButton } from "./ResumeButton";
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const isDark = mounted && resolvedTheme === "dark";
   const [currentDesignationIndex, setCurrentDesignationIndex] = useState(0);
-  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+
 
   const { data: heroData } = useQuery({
     queryKey: ['hero'],
@@ -101,6 +101,18 @@ export default function Hero() {
         style={{ backgroundImage: `radial-gradient(circle at center, ${isDark ? '#ffffff' : '#000000'} 1px, transparent 1px)`, backgroundSize: '32px 32px' }} />
       <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
 
+      {/* Decorative Background Orbs */}
+      <motion.div 
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} 
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} 
+        className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-[100px] pointer-events-none" 
+      />
+      <motion.div 
+        animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }} 
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
+        className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" 
+      />
+
 
       <div className="w-full h-full px-6 sm:px-10 lg:px-16 flex items-center justify-center z-10">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
@@ -138,8 +150,8 @@ export default function Hero() {
             {/* Title */}
             <div className="overflow-hidden mb-6 w-full perspective-[1000px]">
               <motion.h1 variants={textRevealVariants} className="text-5xl sm:text-7xl lg:text-[5.5rem] font-black tracking-tighter leading-[0.95] text-black dark:text-white">
-                <span className="block text-gray-600 dark:text-gray-500 font-medium tracking-normal text-2xl sm:text-3xl mb-4">Hello, I am</span>
-                <span className="inline-flex flex-wrap gap-x-4">
+                <span className="block text-gray-600 dark:text-gray-400 font-medium tracking-normal text-2xl sm:text-3xl mb-4 ml-1">Hello, I am</span>
+                <span className="inline-flex flex-wrap gap-x-4 -ml-[0.08em]">
                   {(hero?.heroTitle || "Salman Hossain").split(' ').map((word: string, i: number) => (
                     <span key={i} className="inline-flex overflow-hidden">
                       {word.split('').map((char: string, j: number) => (
@@ -190,26 +202,27 @@ export default function Hero() {
 
             {/* Buttons */}
             <motion.div variants={fadeUpVariants} className="flex flex-col sm:flex-row items-center gap-4 mb-8 w-full sm:w-auto">
-              <Link href="/about" className="group relative overflow-hidden w-full sm:w-auto px-8 py-4 bg-white text-black font-semibold flex items-center justify-center transition-colors duration-300">
-                <span className="absolute inset-y-0 left-0 w-0 bg-black transition-all duration-[400ms] ease-out group-hover:w-full z-0" />
-                <span className="relative z-10 flex items-center gap-3 group-hover:text-white transition-colors duration-300">
+              <Link href="#about" className="group relative overflow-hidden w-full sm:w-auto px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold flex items-center justify-center transition-colors duration-300">
+                <span className="absolute inset-y-0 left-0 w-0 bg-white dark:bg-black transition-all duration-[400ms] ease-out group-hover:w-full z-0" />
+                <span className="relative z-10 flex items-center gap-3 group-hover:text-black dark:group-hover:text-white transition-colors duration-300">
                   More About Me
                   <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
               {hero?.resumeUrl && (
-                <button onClick={() => setIsResumeModalOpen(true)} className="cursor-pointer group relative overflow-hidden w-full sm:w-auto px-8 py-4 bg-transparent border border-black/20 dark:border-white/20 text-black dark:text-white font-semibold flex items-center justify-center transition-colors duration-300">
+                <ResumeButton url={hero.resumeUrl} className="cursor-pointer group relative overflow-hidden w-full sm:w-auto px-8 py-4 bg-transparent border border-black/20 dark:border-white/20 text-black dark:text-white font-semibold flex items-center justify-center transition-colors duration-300">
                   <span className="absolute inset-y-0 left-0 w-0 bg-black dark:bg-white transition-all duration-[400ms] ease-out group-hover:w-full z-0" />
                   <span className="relative z-10 flex items-center gap-3 group-hover:text-white dark:group-hover:text-black transition-colors duration-300">
                     View Resume
                     <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
                   </span>
-                </button>
+                </ResumeButton>
               )}
               <Link href="#contact" className="hidden sm:flex group relative overflow-hidden w-full sm:w-auto px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold items-center justify-center transition-colors duration-300">
                 <span className="absolute inset-y-0 left-0 w-0 bg-white dark:bg-black transition-all duration-[400ms] ease-out group-hover:w-full z-0" />
                 <span className="relative z-10 flex items-center gap-3 group-hover:text-black dark:group-hover:text-white transition-colors duration-300">
                   Let's Talk
+                  <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
             </motion.div>
@@ -222,7 +235,7 @@ export default function Hero() {
                   <div
                     key={idx}
                     style={{ transitionDelay: `${idx * 50}ms` }}
-                    className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] flex items-center justify-center border border-black/10 dark:border-white/10 shadow-lg transition-all duration-500 opacity-100 group-hover:opacity-0 group-hover:-translate-y-4"
+                    className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] flex items-center justify-center border border-black/10 dark:border-white/10 shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-100 scale-100 rotate-0 group-hover:opacity-0 group-hover:scale-50 group-hover:-rotate-90 group-hover:-translate-y-8"
                   >
                     <span className="text-black dark:text-white font-black text-sm">{letter}</span>
                   </div>
@@ -243,12 +256,12 @@ export default function Hero() {
                         target="_blank"
                         rel="noreferrer"
                         style={{ transitionDelay: `${i * 50}ms` }}
-                        className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg transition-all duration-500 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 hover:!scale-110 overflow-hidden"
+                        className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-0 scale-50 rotate-90 translate-y-8 group-hover:opacity-100 group-hover:scale-100 group-hover:rotate-0 group-hover:translate-y-0 hover:!scale-125 overflow-hidden"
                       >
                         {link.iconUrl ? (
-                          <Image src={link.iconUrl} alt={link.platform} width={40} height={40} className="w-full h-full object-cover" unoptimized />
+                          <Image src={link.iconUrl} alt={link.platform} width={40} height={40} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" unoptimized />
                         ) : (
-                          <DefaultIcon className="w-6 h-6 text-black" />
+                          <DefaultIcon className="w-6 h-6 text-black grayscale hover:grayscale-0 transition-all duration-300" />
                         )}
                       </a>
                     );
@@ -259,7 +272,7 @@ export default function Hero() {
                     <div
                       key={i}
                       style={{ transitionDelay: `${i * 50}ms` }}
-                      className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] border border-black/10 dark:border-white/10 transition-all duration-500 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none"
+                      className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] border border-black/10 dark:border-white/10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-0 scale-50 rotate-90 translate-y-8 group-hover:opacity-100 group-hover:scale-100 group-hover:rotate-0 group-hover:translate-y-0 pointer-events-none"
                     />
                   );
                 })}
@@ -278,9 +291,13 @@ export default function Hero() {
             <div className="relative w-64 h-80 sm:w-80 sm:h-[400px] lg:w-[400px] lg:h-[500px]">
 
               {/* Minimalist Border Box */}
-              <div className="absolute inset-0 border border-black/20 dark:border-white/20 translate-x-4 translate-y-4 lg:translate-x-6 lg:translate-y-6 transition-transform duration-500 group-hover:translate-x-0 group-hover:translate-y-0" />
+              <motion.div 
+                animate={{ rotate: [0, 2, -2, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 border-2 border-black/20 dark:border-white/20 translate-x-4 translate-y-4 lg:translate-x-6 lg:translate-y-6 transition-transform duration-500 group-hover:translate-x-0 group-hover:translate-y-0" 
+              />
 
-              <div className="w-full h-full relative overflow-hidden bg-white dark:bg-[#111] z-10 grayscale hover:grayscale-0 transition-all duration-700 border border-black/10 dark:border-white/10">
+              <div className="w-full h-full relative overflow-hidden bg-white dark:bg-[#111] z-10 grayscale hover:grayscale-0 transition-all duration-700 border border-black/10 dark:border-white/10 group">
                 {hero?.profileImage && (
                   <Image
                     src={hero.profileImage}
@@ -297,18 +314,24 @@ export default function Hero() {
 
               {/* Floating B&W Badge */}
               <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="absolute -left-6 lg:-left-12 bottom-12 bg-white text-black p-4 shadow-2xl flex items-center gap-4 z-20"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="absolute -left-6 lg:-left-12 bottom-12 z-20"
               >
-                <div className="w-10 h-10 bg-black flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-black dark:text-white" />
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-500">Currently</p>
-                  <p className="text-sm font-black uppercase tracking-wider">Available</p>
-                </div>
+                <motion.div 
+                  animate={{ y: [0, -12, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="bg-white dark:bg-[#111] text-black dark:text-white p-4 shadow-2xl flex items-center gap-4 rounded-xl border border-black/5 dark:border-white/10 backdrop-blur-sm"
+                >
+                  <div className="w-10 h-10 bg-black dark:bg-white flex items-center justify-center rounded-lg shadow-inner">
+                    <Sparkles className="w-5 h-5 text-white dark:text-black" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Currently</p>
+                    <p className="text-sm font-black uppercase tracking-wider text-black dark:text-white">Available</p>
+                  </div>
+                </motion.div>
               </motion.div>
 
             </div>
@@ -328,11 +351,7 @@ export default function Hero() {
         <ChevronDown className="w-6 h-6 text-black dark:text-white" />
       </motion.div>
 
-      <AnimatePresence>
-        {isResumeModalOpen && hero?.resumeUrl && (
-          <ResumeModal url={hero.resumeUrl} onClose={() => setIsResumeModalOpen(false)} />
-        )}
-      </AnimatePresence>
+
 
     </section>
   );
