@@ -12,31 +12,12 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
   const [show, setShow] = useState(true);
   const [videoEnded, setVideoEnded] = useState(false);
 
-
-
   useEffect(() => {
-    // We hide the preloader when both the video has ended AND data has finished loading
-    // Or as a fallback, we force hide it after 6 seconds to prevent users getting stuck
-    let timeoutId: NodeJS.Timeout;
-
-    if (show) {
-      if (!isLoading) {
-        setShow(false);
-        onLoadingComplete();
-      }
-
-      timeoutId = setTimeout(() => {
-        if (show) {
-          setShow(false);
-          onLoadingComplete();
-        }
-      }, 6000); // 6 seconds max
+    if (show && !isLoading && videoEnded) {
+      setShow(false);
+      onLoadingComplete();
     }
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [isLoading, show, onLoadingComplete]);
+  }, [isLoading, videoEnded, show, onLoadingComplete]);
 
   if (!show) return null;
 
@@ -51,8 +32,9 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
         >
           <div className="w-full max-w-md aspect-video relative flex flex-col items-center justify-center">
             <video
-              src="/logo-video.mp4"
+              src="/loading-video.mp4"
               autoPlay
+              muted
               playsInline
               onEnded={() => setVideoEnded(true)}
               className="w-full h-full object-contain"
@@ -60,7 +42,7 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
           </div>
           <div className="mt-8 flex flex-col items-center">
             <div className="w-48 h-1 bg-gray-800 rounded-full overflow-hidden">
-              <motion.div 
+              <motion.div
                 className="h-full bg-gradient-to-r from-blue-500 to-emerald-400"
                 initial={{ width: "0%" }}
                 animate={{ width: isLoading ? "60%" : "100%" }}

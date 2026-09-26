@@ -47,13 +47,9 @@ function HomeContent() {
 
   useEffect(() => {
     setMounted(true);
-    if (sessionStorage.getItem("portfolio_visited")) {
-      setLoadingComplete(true);
-    }
   }, []);
 
   const handleLoadingComplete = useCallback(() => {
-    sessionStorage.setItem("portfolio_visited", "true");
     setLoadingComplete(true);
   }, []);
 
