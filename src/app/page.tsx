@@ -37,6 +37,9 @@ function HomeContent() {
       if (event.data === 'REFRESH_DATA') {
         queryClient.invalidateQueries();
       }
+      if (event.data === 'HARD_REFRESH') {
+        window.location.reload();
+      }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
