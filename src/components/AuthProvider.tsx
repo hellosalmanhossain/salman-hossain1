@@ -4,6 +4,7 @@ import { useEffect, useState, ReactNode } from "react";
 import { useAuthStore } from "@/store/auth.store";
 import { AuthService } from "@/services/auth.service";
 import { Loader2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isInitializing, setIsInitializing] = useState(true);
@@ -29,7 +30,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     initAuth();
   }, [accessToken, logout]);
 
-  if (isInitializing) {
+  const pathname = usePathname();
+
+  if (isInitializing && pathname?.startsWith("/dashboard")) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-white dark:bg-[#0A0A0A]">
         <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
