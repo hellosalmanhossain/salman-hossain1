@@ -33,6 +33,8 @@ import {
 } from "lucide-react";
 import { TemplateRegistry } from "@/templates/TemplateRegistry";
 import { AdminPortfolioTemplate } from "@/types/adminPortfolio";
+import { SeoSettingService } from "@/services/seoSetting.service";
+import { CreateSeoSettingDto } from "@/types/seoSetting";
 import { WizardAccordion, WizardStep } from "./components/WizardAccordion";
 import HeroPage from "../hero/page";
 import AboutPage from "../about/page";
@@ -110,6 +112,48 @@ export default function CustomizeThemePage() {
       // Mocked for now to match structure
       return { data: [{ id: "1", templateName: "Tech Dark Theme", personalData: { themeStyle: "default", primaryColor: "#0ea5e9" }, websiteData: { showHero: true, showAbout: true, showProjects: true, showBlog: true } }] };
     },
+  });
+
+  const { data: seoResponse } = useQuery({
+    queryKey: ["seoSetting"],
+    queryFn: SeoSettingService.getSeoSetting,
+  });
+
+  const seoData = seoResponse?.data;
+  const [fontFamily, setFontFamily] = useState<string>("Inter");
+
+  useEffect(() => {
+    if (seoData?.fontFamily) {
+      setFontFamily(seoData.fontFamily);
+    }
+  }, [seoData]);
+
+  const updateSeoMutation = useMutation({
+    mutationFn: (newFont: string) => {
+      if (seoData?.id) {
+        return SeoSettingService.updateSeoSetting(seoData.id, { fontFamily: newFont });
+      } else {
+        const payload: CreateSeoSettingDto = {
+          metaTitle: "Portfolio",
+          metaDescription: "Portfolio Description",
+          metaKeywords: ["portfolio"],
+          fontFamily: newFont
+        };
+        return SeoSettingService.createSeoSetting(payload);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seoSetting"] });
+      toast.success("Font family updated!");
+      const iframe = document.getElementById("theme-preview-iframe") as HTMLIFrameElement;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage('HARD_REFRESH', '*');
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || error.message || "Failed to update font");
+      console.error(error);
+    }
   });
 
   const updateMutation = useMutation({
@@ -219,7 +263,7 @@ export default function CustomizeThemePage() {
                     onChange={(e) => {
                       const updatedData = { ...formData, templateName: e.target.value, isActive: true };
                       setFormData(updatedData);
-                      if (selectedTemplateId && selectedTemplateId !== "new") {
+                      if (selectedTemplateId) {
                         updateMutation.mutate({ id: selectedTemplateId, data: updatedData });
                       }
                     }}
@@ -228,6 +272,24 @@ export default function CustomizeThemePage() {
                     <option value="Tech Dark Theme">Tech Dark Theme (Active)</option>
                     <option value="Minimal Light">Minimal Light (Coming Soon)</option>
                     <option value="Creative Portfolio">Creative Portfolio (Coming Soon)</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Global Font Family</label>
+                  <select 
+                    value={fontFamily}
+                    onChange={(e) => {
+                      setFontFamily(e.target.value);
+                      updateSeoMutation.mutate(e.target.value);
+                    }}
+                    className="w-full px-4 py-3 bg-white dark:bg-[#1A1A1A] border border-gray-200 dark:border-white/10 rounded-xl text-sm focus:outline-none focus:border-blue-500 shadow-sm transition-colors"
+                  >
+                    <option value="Inter">Inter (Clean, modern, professional)</option>
+                    <option value="Plus Jakarta Sans">Plus Jakarta Sans (Premium, elegant)</option>
+                    <option value="Manrope">Manrope (Modern, slightly futuristic)</option>
+                    <option value="Sora">Sora (Bold, techy, distinctive)</option>
+                    <option value="DM Sans">DM Sans (Simple, friendly, readable)</option>
                   </select>
                 </div>
 
