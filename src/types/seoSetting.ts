@@ -12,6 +12,7 @@ export interface SeoSetting {
   ogDescription?: string;
   ogImage?: string;
   twitterCard?: string;
+  fontFamily?: string;
   createdAt: string;
   updatedAt: string;
 }
