@@ -246,7 +246,8 @@ const TechSphere: React.FC = () => {
 
   return (
     <section id="skills" className="w-full bg-transparent py-20 relative z-10 overflow-x-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-16">
+      <div className="w-full px-6 sm:px-10 lg:px-16 z-10 relative">
+        <div className="max-w-[1400px] mx-auto w-full">
 
         <div className="flex flex-col gap-2 mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white">
@@ -341,6 +342,7 @@ const TechSphere: React.FC = () => {
 
           </div>
 
+        </div>
         </div>
       </div>
     </section>
