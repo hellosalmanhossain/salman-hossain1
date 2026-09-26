@@ -142,6 +142,17 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
       y: window.innerHeight / 2 - initialOffset.y
     });
 
+    const { cornerSize } = constants;
+    const initialPositions = [
+      { x: -cornerSize * 1.5, y: -cornerSize * 1.5 },
+      { x: cornerSize * 0.5, y: -cornerSize * 1.5 },
+      { x: cornerSize * 0.5, y: cornerSize * 0.5 },
+      { x: -cornerSize * 1.5, y: cornerSize * 0.5 }
+    ];
+    cornersRef.current.forEach((corner, index) => {
+      gsap.set(corner, { x: initialPositions[index].x, y: initialPositions[index].y });
+    });
+
     const createSpinTimeline = () => {
       if (spinTl.current) {
         spinTl.current.kill();
