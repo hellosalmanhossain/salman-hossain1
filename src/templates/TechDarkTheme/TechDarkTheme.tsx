@@ -10,6 +10,7 @@ import Blog from "./components/Blog";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import TargetCursor from "./components/TargetCursor";
+import Services from "./components/Services";
 import Sidebar from "./components/Sidebar";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -44,10 +45,11 @@ export default function TechDarkTheme({ websiteData, isLight, mounted }: any) {
         <div className="md:pl-20">
           {/* Dynamic sections based on template data */}
           {websiteData.showHero !== false && <Hero />}
-          {websiteData.showAbout !== false && <About />}
-          <TechSphere />
-          <Experience />
           {websiteData.showProjects !== false && <Projects />}
+          {websiteData.showServices !== false && <Services />}
+          <Experience />
+          <TechSphere />
+          {websiteData.showAbout !== false && <About />}
           {websiteData.showBlog !== false && <Blog />}
           <Contact />
           <Footer />

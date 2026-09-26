@@ -17,6 +17,8 @@ export interface Project {
   videoUrl?: string;
   technologies: string[];
   role?: string;
+  team?: string;
+  impact?: string;
   startDate?: string;
   endDate?: string;
   featured: boolean;
@@ -26,6 +28,7 @@ export interface Project {
   tags: string[];
   categoryId?: string;
   category?: ProjectCategory;
+  projectType: "PERSONAL" | "CLIENT";
   projectViews: ProjectView[];
 }
 

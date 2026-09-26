@@ -3,9 +3,14 @@ import { UploadResponse } from '@/types/upload';
 import { ApiResponse } from '@/types/common';
 
 export const UploadService = {
-  uploadFile: async (file: File): Promise<ApiResponse<UploadResponse[]>> => {
+  uploadFile: async (file: File | File[]): Promise<ApiResponse<UploadResponse[]>> => {
     const formData = new FormData();
-    formData.append('image', file);
+    
+    if (Array.isArray(file)) {
+      file.forEach(f => formData.append('image', f));
+    } else {
+      formData.append('image', file);
+    }
     
     // fetchApi automatically handles FormData Content-Type
     const res = await fetchApi.post<ApiResponse<UploadResponse[]>>('/upload', formData);

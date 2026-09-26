@@ -8,6 +8,7 @@ import { Loader2, Plus, Edit2, Trash2, ExternalLink, Code } from "lucide-react";
 import { Project, CreateProjectDto } from "@/types/project";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import FileUpload from "@/components/FileUpload";
 
 export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?: boolean, onNext?: () => void }) {
   const queryClient = useQueryClient();
@@ -24,7 +25,8 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
     queryFn: () => ProjectCategoryService.getCategories(),
   });
 
-  const { register, handleSubmit, reset, setValue } = useForm<CreateProjectDto>();
+  const { register, handleSubmit, reset, setValue, watch } = useForm<CreateProjectDto>();
+  const thumbnails = watch("thumbnails");
 
   const createMutation = useMutation({
     mutationFn: (newProject: CreateProjectDto) => ProjectService.createProject(newProject),
@@ -70,13 +72,14 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
       setValue("videoUrl", project.videoUrl);
       setValue("technologies", project.technologies?.join(', ') as any);
       setValue("features", project.features?.join(', ') as any);
-      setValue("thumbnails", project.thumbnails?.join(', ') as any);
+      setValue("thumbnails", (project.thumbnails || []) as any);
       setValue("tags", project.tags?.join(', ') as any);
       setValue("role", project.role);
       setValue("startDate", project.startDate ? project.startDate.split('T')[0] : "");
       setValue("endDate", project.endDate ? project.endDate.split('T')[0] : "");
       setValue("status", project.status);
       setValue("categoryId", project.categoryId);
+      setValue("projectType", project.projectType || "PERSONAL");
       setValue("featured", project.featured);
     } else {
       setEditingId(null);
@@ -94,6 +97,7 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
         tags: [],
         role: "",
         status: "DRAFT" as any,
+        projectType: "PERSONAL" as any,
         featured: false
       });
     }
@@ -214,8 +218,12 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
             </div>
 
             <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Thumbnails (URLs, comma separated)</label>
-              <input {...register("thumbnails")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              <FileUpload
+                multiple
+                label="Project Thumbnails"
+                value={thumbnails || []}
+                onChange={(urls) => setValue("thumbnails", urls)}
+              />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -233,7 +241,7 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date</label>
                 <input {...register("startDate")} type="date" className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
@@ -241,6 +249,13 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">End Date</label>
                 <input {...register("endDate")} type="date" className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Project Type</label>
+                <select {...register("projectType")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500">
+                  <option value="PERSONAL">Personal</option>
+                  <option value="CLIENT">Production / Client / Team</option>
+                </select>
               </div>
               <div className="space-y-1">
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
@@ -301,7 +316,12 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
                   {data?.data?.map((project: Project) => (
                     <tr key={project.id} className="border-b border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                       <td className="p-4">
-                        <p className="font-semibold text-black dark:text-white">{project.title}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-black dark:text-white">{project.title}</p>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${project.projectType === 'CLIENT' ? 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300' : 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'}`}>
+                            {project.projectType === 'CLIENT' ? 'Client / Prod' : 'Personal'}
+                          </span>
+                        </div>
                         <div className="flex gap-3 mt-1">
                           {project.liveUrl && (
                             <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-1">

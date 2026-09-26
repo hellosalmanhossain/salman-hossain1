@@ -37,6 +37,9 @@ function HomeContent() {
       if (event.data === 'REFRESH_DATA') {
         queryClient.invalidateQueries();
       }
+      if (event.data === 'HARD_REFRESH') {
+        window.location.reload();
+      }
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
@@ -44,13 +47,9 @@ function HomeContent() {
 
   useEffect(() => {
     setMounted(true);
-    if (sessionStorage.getItem("portfolio_visited")) {
-      setLoadingComplete(true);
-    }
   }, []);
 
   const handleLoadingComplete = useCallback(() => {
-    sessionStorage.setItem("portfolio_visited", "true");
     setLoadingComplete(true);
   }, []);
 
