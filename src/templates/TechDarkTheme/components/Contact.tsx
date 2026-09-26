@@ -58,7 +58,8 @@ export default function Contact() {
 
   return (
     <section id="contact" className="w-full bg-transparent py-24 relative z-10 overflow-x-hidden font-sans">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 xl:px-24">
+      <div className="w-full px-6 sm:px-10 lg:px-16 z-10 relative">
+        <div className="max-w-[1400px] mx-auto w-full">
         
         <motion.div 
           variants={containerVariants}
@@ -231,6 +232,7 @@ export default function Contact() {
           </motion.div>
 
         </motion.div>
+        </div>
       </div>
     </section>
   );
