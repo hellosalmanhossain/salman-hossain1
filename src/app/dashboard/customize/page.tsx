@@ -337,11 +337,9 @@ export default function CustomizeThemePage() {
               isExpanded={expandedSection === 2}
               onToggle={() => setExpandedSection(expandedSection === 2 ? 0 : 2)}
               onNext={() => setExpandedSection(3)}
-              hideNextButton={true}
             >
               <HeroPage hideHeader={true} onNext={() => {
                 handleRefreshPreview();
-                setExpandedSection(3);
               }} />
             </WizardStep>
 
@@ -353,11 +351,9 @@ export default function CustomizeThemePage() {
               isExpanded={expandedSection === 3}
               onToggle={() => setExpandedSection(expandedSection === 3 ? 0 : 3)}
               onNext={() => setExpandedSection(4)}
-              hideNextButton={true}
             >
               <AboutPage hideHeader={true} onNext={() => {
                 handleRefreshPreview();
-                setExpandedSection(4);
               }} />
             </WizardStep>
 
@@ -372,38 +368,35 @@ export default function CustomizeThemePage() {
             >
               <SkillsPage hideHeader={true} onNext={() => {
                 handleRefreshPreview();
-                setExpandedSection(5);
               }} />
             </WizardStep>
             {/* STEP 5: Experience */}
             <WizardStep id={5} title="Experience" icon={Briefcase} isExpanded={expandedSection === 5} onToggle={() => setExpandedSection(expandedSection === 5 ? 0 : 5)} onNext={() => setExpandedSection(6)}>
               <ExperiencePage hideHeader={true} onNext={() => {
                 handleRefreshPreview();
-                setExpandedSection(6);
               }} />
             </WizardStep>
             {/* STEP 6: Education */}
             <WizardStep id={6} title="Education" icon={GraduationCap} isExpanded={expandedSection === 6} onToggle={() => setExpandedSection(expandedSection === 6 ? 0 : 6)} onNext={() => setExpandedSection(7)}>
               <EducationPage hideHeader={true} onNext={() => {
                 handleRefreshPreview();
-                setExpandedSection(7);
               }} />
             </WizardStep>
             {/* STEP 7: Services */}
             <WizardStep id={7} title="Services" icon={Package} isExpanded={expandedSection === 7} onToggle={() => setExpandedSection(expandedSection === 7 ? 0 : 7)} onNext={() => setExpandedSection(8)}>
-              <ServicesPage hideHeader={true} onNext={() => { handleRefreshPreview(); setExpandedSection(8); }} />
+              <ServicesPage hideHeader={true} onNext={() => { handleRefreshPreview(); }} />
             </WizardStep>
             {/* STEP 8: Projects */}
             <WizardStep id={8} title="Projects" icon={FolderGit2} isExpanded={expandedSection === 8} onToggle={() => setExpandedSection(expandedSection === 8 ? 0 : 8)} onNext={() => setExpandedSection(9)}>
-              <ProjectsPage hideHeader={true} onNext={() => { handleRefreshPreview(); setExpandedSection(9); }} />
+              <ProjectsPage hideHeader={true} onNext={() => { handleRefreshPreview(); }} />
             </WizardStep>
             {/* STEP 9: Certificates */}
             <WizardStep id={9} title="Certificates" icon={Award} isExpanded={expandedSection === 9} onToggle={() => setExpandedSection(expandedSection === 9 ? 0 : 9)} onNext={() => setExpandedSection(10)}>
-              <CertificatesPage hideHeader={true} onNext={() => { handleRefreshPreview(); setExpandedSection(10); }} />
+              <CertificatesPage hideHeader={true} onNext={() => { handleRefreshPreview(); }} />
             </WizardStep>
             {/* STEP 10: Testimonials */}
             <WizardStep id={10} title="Testimonials" icon={MessageSquare} isExpanded={expandedSection === 10} onToggle={() => setExpandedSection(expandedSection === 10 ? 0 : 10)} onNext={() => setExpandedSection(11)}>
-              <TestimonialsPage hideHeader={true} onNext={() => { handleRefreshPreview(); setExpandedSection(11); }} />
+              <TestimonialsPage hideHeader={true} onNext={() => { handleRefreshPreview(); }} />
             </WizardStep>
             {/* STEP 11: Social Links */}
             <WizardStep id={11} title="Social Links" icon={LinkIcon} isExpanded={expandedSection === 11} onToggle={() => setExpandedSection(expandedSection === 11 ? 0 : 11)} onNext={() => {

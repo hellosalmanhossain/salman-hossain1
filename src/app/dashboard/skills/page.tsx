@@ -145,12 +145,14 @@ export default function SkillsDashboard({ hideHeader, onNext }: { hideHeader?: b
                 <FormItem><FormLabel>Category</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value || "FRONTEND"}>
                     <FormControl><SelectTrigger className="w-full px-4 py-2.5 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500 text-gray-900 dark:text-gray-100 h-auto"><SelectValue placeholder="Select a category" /></SelectTrigger></FormControl>
-                    <SelectContent>
-                      <SelectItem value="FRONTEND">FRONTEND</SelectItem>
-                      <SelectItem value="BACKEND">BACKEND</SelectItem>
-                      <SelectItem value="DATABASE">DATABASE</SelectItem>
-                      <SelectItem value="DEVOPS">DEVOPS</SelectItem>
-                      <SelectItem value="TOOL">TOOL</SelectItem>
+                    <SelectContent className="bg-white dark:bg-[#1A1C23] border-gray-200 dark:border-white/10 text-gray-900 dark:text-gray-100">
+                      <SelectItem value="FRONTEND" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">FRONTEND</SelectItem>
+                      <SelectItem value="BACKEND" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">BACKEND</SelectItem>
+                      <SelectItem value="DATABASE" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">DATABASE</SelectItem>
+                      <SelectItem value="DEVOPS" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">DEVOPS</SelectItem>
+                      <SelectItem value="TOOL" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">TOOL</SelectItem>
+                      <SelectItem value="TESTING" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">TESTING</SelectItem>
+                      <SelectItem value="CORE_ENGINEERING" className="cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 focus:bg-gray-100 dark:focus:bg-white/10">CORE_ENGINEERING</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

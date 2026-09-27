@@ -23,6 +23,8 @@ export enum SkillCategory {
   DATABASE = 'DATABASE',
   DEVOPS = 'DEVOPS',
   TOOL = 'TOOL',
+  TESTING = 'TESTING',
+  CORE_ENGINEERING = 'CORE_ENGINEERING',
 }
 
 export enum ContactStatus {
