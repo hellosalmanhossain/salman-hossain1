@@ -13,7 +13,27 @@ export default function Preloader({ onLoadingComplete, isLoading }: PreloaderPro
   const [videoEnded, setVideoEnded] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSeen = sessionStorage.getItem("hasSeenPreloader");
+      if (hasSeen) {
+        setShow(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSeen = sessionStorage.getItem("hasSeenPreloader");
+      if (hasSeen) {
+        if (!isLoading) {
+          onLoadingComplete();
+        }
+        return;
+      }
+    }
+
     if (show && !isLoading && videoEnded) {
+      sessionStorage.setItem("hasSeenPreloader", "true");
       setShow(false);
       onLoadingComplete();
     }

@@ -210,16 +210,24 @@ const TechSphere: React.FC = () => {
       skills: apiSkills.filter(s => s.category === 'BACKEND').map(s => ({ name: s.name, icon: s.icon || '🟢' }))
     },
     {
-      title: "Database",
+      title: "Database & Data Layer",
       skills: apiSkills.filter(s => s.category === 'DATABASE').map(s => ({ name: s.name, icon: s.icon || '🐬' }))
     },
     {
-      title: "DevOps & Cloud",
+      title: "DevOps & Deployment",
       skills: apiSkills.filter(s => s.category === 'DEVOPS').map(s => ({ name: s.name, icon: s.icon || '☁' }))
     },
     {
-      title: "Tools & Languages",
+      title: "Tools & Workflow",
       skills: apiSkills.filter(s => s.category === 'TOOL').map(s => ({ name: s.name, icon: s.icon || '⚙️' }))
+    },
+    {
+      title: "Testing & Quality",
+      skills: apiSkills.filter(s => s.category === 'TESTING').map(s => ({ name: s.name, icon: s.icon || '🧪' }))
+    },
+    {
+      title: "Core Engineering",
+      skills: apiSkills.filter(s => s.category === 'CORE_ENGINEERING').map(s => ({ name: s.name, icon: s.icon || '⚙️' }))
     }
   ].filter(category => category.skills.length > 0);
 

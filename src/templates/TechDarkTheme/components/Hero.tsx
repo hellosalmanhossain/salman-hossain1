@@ -126,21 +126,21 @@ export default function Hero() {
           >
             {/* Dynamic Designation Badge */}
             {hero?.designations && hero.designations.length > 0 && (
-              <motion.div variants={fadeUpVariants} className="mb-8">
-                <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 backdrop-blur-sm">
-                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                  <div className="h-5 overflow-hidden relative w-[160px] sm:w-[180px] text-left">
+              <motion.div variants={fadeUpVariants} className="mb-6 lg:mb-8 mt-4 lg:mt-0">
+                <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-full border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 backdrop-blur-sm min-h-[40px]">
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse shrink-0" />
+                  <div className="flex items-center justify-start overflow-hidden">
                     <AnimatePresence mode="wait">
-                      <motion.span
+                      <motion.div
                         key={currentDesignationIndex}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                        className="absolute inset-0 flex items-center text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-200 tracking-wide uppercase"
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="text-xs sm:text-sm font-semibold text-gray-800 dark:text-gray-200 tracking-wider uppercase whitespace-nowrap"
                       >
                         {hero.designations[currentDesignationIndex]}
-                      </motion.span>
+                      </motion.div>
                     </AnimatePresence>
                   </div>
                 </div>

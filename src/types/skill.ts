@@ -1,4 +1,4 @@
-export type SkillCategory = 'FRONTEND' | 'BACKEND' | 'DATABASE' | 'DEVOPS' | 'TOOL';
+export type SkillCategory = 'FRONTEND' | 'BACKEND' | 'DATABASE' | 'DEVOPS' | 'TOOL' | 'TESTING' | 'CORE_ENGINEERING';
 
 export interface Skill {
   id: string;
