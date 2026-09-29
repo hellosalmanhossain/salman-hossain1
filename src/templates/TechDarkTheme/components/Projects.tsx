@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, ArrowRight, Calendar, Users, Activity, X } from "lucide-react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { ProjectService } from "@/services/project.service";
 import { Project } from "@/types/project";
+import ProjectDetails from "@/components/ProjectDetails";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -35,15 +36,14 @@ export default function Projects() {
     return true;
   });
 
-  // Set initial active project
-  if (filteredProjects.length > 0 && !activeProjectId) {
-    setActiveProjectId(filteredProjects[0].id);
-  }
-
-  // Handle case where filter change removes the active project
-  if (filteredProjects.length > 0 && activeProjectId && !filteredProjects.find(p => p.id === activeProjectId)) {
-    setActiveProjectId(filteredProjects[0].id);
-  }
+  // Handle setting the active project safely without triggering infinite re-renders
+  useEffect(() => {
+    if (filteredProjects.length > 0) {
+      if (!activeProjectId || !filteredProjects.find(p => p.id === activeProjectId)) {
+        setActiveProjectId(filteredProjects[0].id);
+      }
+    }
+  }, [filteredProjects, activeProjectId]);
 
   const activeProject = filteredProjects.find(p => p.id === activeProjectId) || filteredProjects[0];
 
@@ -326,32 +326,8 @@ export default function Projects() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar text-black dark:text-white">
-                {activeProject.thumbnails?.length > 0 && (
-                   <img src={activeProject.thumbnails[0]} className="w-full max-h-[400px] object-cover rounded-xl border border-black/10 dark:border-white/10 mb-8" alt={activeProject.title} />
-                )}
-                <div className="prose dark:prose-invert max-w-none">
-                  {activeProject.content ? (
-                    <div dangerouslySetInnerHTML={{ __html: activeProject.content }} />
-                  ) : (
-                    <div>
-                      <h4 className="text-xl font-bold mb-4">About the Project</h4>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">{activeProject.description}</p>
-                      
-                      <h4 className="text-xl font-bold mb-4">Features</h4>
-                      <ul className="list-disc pl-5 space-y-2 text-gray-700 dark:text-gray-300">
-                        {activeProject.features?.map((f, i) => <li key={i}>{f}</li>) || <li>No features listed.</li>}
-                      </ul>
-
-                      <h4 className="text-xl font-bold mt-8 mb-4">Technologies</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {activeProject.technologies?.map((t, i) => (
-                           <span key={i} className="px-3 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full text-sm">{t}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+              <div className="flex-1 overflow-y-auto custom-scrollbar p-0 bg-white dark:bg-[#0a0a0a]">
+                <ProjectDetails project={activeProject} />
               </div>
             </motion.div>
           </div>

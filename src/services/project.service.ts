@@ -18,6 +18,11 @@ export const ProjectService = {
     return res.data;
   },
 
+  getProjectBySlug: async (slug: string): Promise<ApiResponse<Project>> => {
+    const res = await fetchApi.get<ApiResponse<Project>>(`/projects/slug/${slug}`);
+    return res.data;
+  },
+
   updateProject: async (id: string, data: UpdateProjectDto): Promise<ApiResponse<Project>> => {
     const res = await fetchApi.patch<ApiResponse<Project>>(`/projects/${id}`, data);
     return res.data;
