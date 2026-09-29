@@ -6,7 +6,7 @@ import { ProjectService } from "@/services/project.service";
 import { ProjectCategoryService } from "@/services/projectCategory.service";
 import { Loader2, Plus, Edit2, Trash2, ExternalLink, Code } from "lucide-react";
 import { Project, CreateProjectDto } from "@/types/project";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
 import FileUpload from "@/components/FileUpload";
 
@@ -25,8 +25,19 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
     queryFn: () => ProjectCategoryService.getCategories(),
   });
 
-  const { register, handleSubmit, reset, setValue, watch } = useForm<CreateProjectDto>();
+  const { register, handleSubmit, reset, setValue, watch, control } = useForm<CreateProjectDto>();
+  
+  const { fields: featureFields, append: appendFeature, remove: removeFeature } = useFieldArray({
+    control,
+    name: "projectFeatures" as never
+  });
+
+  const { fields: screenshotFields, append: appendScreenshot, remove: removeScreenshot } = useFieldArray({
+    control,
+    name: "projectScreenshots" as never
+  });
   const thumbnails = watch("thumbnails");
+  const currentScreenshots = watch("projectScreenshots");
 
   const createMutation = useMutation({
     mutationFn: (newProject: CreateProjectDto) => ProjectService.createProject(newProject),
@@ -81,6 +92,12 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
       setValue("categoryId", project.categoryId);
       setValue("projectType", project.projectType || "PERSONAL");
       setValue("featured", project.featured);
+      setValue("duration", project.duration);
+      setValue("statusText", project.statusText);
+      setValue("overviewTitle", project.overviewTitle);
+      setValue("overviewDesc", project.overviewDesc);
+      setValue("projectFeatures", (project.projectFeatures || []) as any);
+      setValue("projectScreenshots", (project.projectScreenshots || []) as any);
     } else {
       setEditingId(null);
       reset({
@@ -98,7 +115,13 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
         role: "",
         status: "DRAFT" as any,
         projectType: "PERSONAL" as any,
-        featured: false
+        featured: false,
+        duration: "",
+        statusText: "",
+        overviewTitle: "",
+        overviewDesc: "",
+        projectFeatures: [],
+        projectScreenshots: []
       });
     }
     setIsFormOpen(true);
@@ -111,7 +134,7 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
   };
 
   const onSubmit = (formData: CreateProjectDto) => {
-    const dataToSubmit = {
+    const dataToSubmit: any = {
       ...formData,
       technologies: typeof formData.technologies === 'string' 
         ? (formData.technologies as string).split(',').map(t => t.trim()).filter(Boolean)
@@ -127,21 +150,37 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
         : formData.tags,
     };
 
-    if (dataToSubmit.startDate) {
-      dataToSubmit.startDate = new Date(dataToSubmit.startDate).toISOString();
-    } else {
-      delete dataToSubmit.startDate;
+    const cleanObject = (obj: any): any => {
+      if (Array.isArray(obj)) {
+        return obj
+          .map(cleanObject)
+          .filter(v => v !== null && v !== "" && v !== undefined && (typeof v !== 'object' || Object.keys(v).length > 0));
+      } else if (obj !== null && typeof obj === 'object') {
+        const cleaned: any = {};
+        Object.keys(obj).forEach(key => {
+          const val = cleanObject(obj[key]);
+          if (val !== null && val !== "" && val !== undefined) {
+            cleaned[key] = val;
+          }
+        });
+        return cleaned;
+      }
+      return obj;
+    };
+
+    const finalData = cleanObject(dataToSubmit);
+
+    if (formData.startDate) {
+      finalData.startDate = new Date(formData.startDate).toISOString();
     }
-    if (dataToSubmit.endDate) {
-      dataToSubmit.endDate = new Date(dataToSubmit.endDate).toISOString();
-    } else {
-      delete dataToSubmit.endDate;
+    if (formData.endDate) {
+      finalData.endDate = new Date(formData.endDate).toISOString();
     }
 
     if (editingId) {
-      updateMutation.mutate({ id: editingId, data: dataToSubmit });
+      updateMutation.mutate({ id: editingId, data: finalData });
     } else {
-      createMutation.mutate(dataToSubmit);
+      createMutation.mutate(finalData);
     }
   };
 
@@ -207,6 +246,28 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Duration (e.g. 3 Months)</label>
+                <input {...register("duration")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Status Text (e.g. Active, Completed)</label>
+                <input {...register("statusText")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Overview Title</label>
+                <input {...register("overviewTitle")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Overview Description</label>
+                <textarea {...register("overviewDesc")} rows={2} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
+            </div>
+
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Features (comma separated)</label>
               <textarea {...register("features")} rows={2} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
@@ -224,6 +285,56 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
                 value={thumbnails || []}
                 onChange={(urls) => setValue("thumbnails", urls)}
               />
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-white/10 pt-6">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200">Key Features</h4>
+                <button type="button" onClick={() => appendFeature({ title: "", description: "" })} className="text-sm flex items-center gap-1 text-blue-500 hover:text-blue-600">
+                  <Plus className="w-4 h-4" /> Add Feature
+                </button>
+              </div>
+              <div className="space-y-4">
+                {featureFields.map((field, index) => (
+                  <div key={field.id} className="flex gap-4 items-start p-4 bg-gray-50 dark:bg-black/20 rounded-xl border border-gray-200 dark:border-white/5">
+                    <div className="flex-1 space-y-3">
+                      <input {...register(`projectFeatures.${index}.title` as const)} placeholder="Feature Title" className="w-full px-4 py-2 bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-lg focus:outline-none focus:border-blue-500" />
+                      <input {...register(`projectFeatures.${index}.description` as const)} placeholder="Feature Description" className="w-full px-4 py-2 bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-lg focus:outline-none focus:border-blue-500" />
+                    </div>
+                    <button type="button" onClick={() => removeFeature(index)} className="text-red-500 p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg">
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 dark:border-white/10 pt-6">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200">Project Screenshots</h4>
+                <button type="button" onClick={() => appendScreenshot({ imageUrl: "", title: "", description: "" })} className="text-sm flex items-center gap-1 text-blue-500 hover:text-blue-600">
+                  <Plus className="w-4 h-4" /> Add Screenshot
+                </button>
+              </div>
+              <div className="space-y-4">
+                {screenshotFields.map((field, index) => (
+                  <div key={field.id} className="flex gap-4 items-start p-4 bg-gray-50 dark:bg-black/20 rounded-xl border border-gray-200 dark:border-white/5">
+                    <div className="flex-1 space-y-3">
+                      <FileUpload
+                        multiple={false}
+                        label=""
+                        value={currentScreenshots?.[index]?.imageUrl || ""}
+                        onChange={(url) => setValue(`projectScreenshots.${index}.imageUrl` as const, url)}
+                      />
+                      <input {...register(`projectScreenshots.${index}.title` as const)} placeholder="Screenshot Title (Optional)" className="w-full px-4 py-2 bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-lg focus:outline-none focus:border-blue-500" />
+                      <input {...register(`projectScreenshots.${index}.description` as const)} placeholder="Screenshot Description (Optional)" className="w-full px-4 py-2 bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-lg focus:outline-none focus:border-blue-500" />
+                    </div>
+                    <button type="button" onClick={() => removeScreenshot(index)} className="text-red-500 p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg">
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -303,76 +414,109 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
             {isLoading ? (
               <div className="flex justify-center items-center h-64"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>
             ) : (
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gray-50 dark:bg-black/20 border-b border-gray-200 dark:border-white/10">
-                    <th className="p-4 font-semibold text-sm text-gray-600 dark:text-gray-300">Project</th>
-                    <th className="p-4 font-semibold text-sm text-gray-600 dark:text-gray-300">Tech Stack</th>
-                    <th className="p-4 font-semibold text-sm text-gray-600 dark:text-gray-300 text-center">Featured</th>
-                    <th className="p-4 font-semibold text-sm text-gray-600 dark:text-gray-300 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.data?.map((project: Project) => (
-                    <tr key={project.id} className="border-b border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                      <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-black dark:text-white">{project.title}</p>
-                          <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${project.projectType === 'CLIENT' ? 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300' : 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'}`}>
-                            {project.projectType === 'CLIENT' ? 'Client / Prod' : 'Personal'}
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {data?.data?.map((project: Project, index: number) => (
+                  <div key={project.id || index} className="group bg-white dark:bg-[#1A1C23] border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 relative flex flex-col">
+                    
+                    {project.featured && (
+                      <div className="absolute top-4 right-4 z-10">
+                        <span className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md text-emerald-400 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-emerald-500/20 shadow-lg">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                          Featured
+                        </span>
+                      </div>
+                    )}
+                    
+                    <div className="h-52 bg-gray-100 dark:bg-black/40 relative overflow-hidden">
+                      {project.thumbnails && project.thumbnails.length > 0 ? (
+                        <img src={project.thumbnails[0]} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      ) : (
+                        <div className="w-full h-full flex flex-col items-center justify-center text-gray-400 dark:text-gray-600">
+                          <svg className="w-10 h-10 mb-2 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span className="text-xs uppercase tracking-widest font-semibold">No Cover</span>
+                        </div>
+                      )}
+                      
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-[2px]">
+                        <button onClick={() => openForm(project)} className="p-3 bg-white text-gray-900 rounded-full hover:scale-110 hover:bg-blue-50 transition-all shadow-xl">
+                          <Edit2 className="w-5 h-5" />
+                        </button>
+                        <button onClick={() => { if (confirm("Are you sure you want to delete this project?")) deleteMutation.mutate(project.id); }} className="p-3 bg-red-500 text-white rounded-full hover:scale-110 hover:bg-red-600 transition-all shadow-xl">
+                            {deleteMutation.isPending && deleteMutation.variables === project.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="p-6 flex-1 flex flex-col">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <span className={`inline-block mb-3 text-[10px] px-2.5 py-1 rounded-lg font-bold uppercase tracking-wider ${project.projectType === 'CLIENT' ? 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300' : 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300'}`}>
+                            {project.projectType === 'CLIENT' ? 'Client Work' : 'Personal Project'}
                           </span>
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-500 transition-colors">
+                            {project.title || "Untitled Project"}
+                          </h3>
                         </div>
-                        <div className="flex gap-3 mt-1">
-                          {project.liveUrl && (
-                            <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-1">
-                              <ExternalLink className="w-3 h-3" /> Live
-                            </a>
-                          )}
-                          {project.githubFrontendUrl && (
-                            <a href={project.githubFrontendUrl} target="_blank" rel="noreferrer" className="text-xs text-gray-500 dark:text-gray-400 hover:underline flex items-center gap-1">
-                              <Code className="w-3 h-3" /> GitHub
-                            </a>
-                          )}
-                        </div>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex flex-wrap gap-1">
-                          {project.technologies.slice(0, 3).map((tech, i) => (
-                            <span key={i} className="text-xs px-2 py-1 bg-gray-100 dark:bg-white/10 rounded-md text-gray-600 dark:text-gray-300">
-                              {tech}
-                            </span>
-                          ))}
-                          {project.technologies.length > 3 && (
-                            <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-white/10 rounded-md text-gray-600 dark:text-gray-300">
-                              +{project.technologies.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="p-4 text-center">
-                        {project.featured && (
-                          <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                      </div>
+                      
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-5">
+                        {project.description || "No description provided for this project."}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2 mb-6 mt-auto">
+                        {project.technologies?.slice(0, 4).map((tech, i) => (
+                          <span key={i} className="text-[11px] px-2.5 py-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-700 dark:text-gray-300 font-medium">
+                            {tech}
+                          </span>
+                        ))}
+                        {(project.technologies?.length || 0) > 4 && (
+                          <span className="text-[11px] px-2.5 py-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-500 dark:text-gray-400 font-medium">
+                            +{(project.technologies?.length || 0) - 4} more
+                          </span>
                         )}
-                      </td>
-                      <td className="p-4 text-right">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openForm(project)} className="p-2 text-gray-500 hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"><Edit2 className="w-4 h-4" /></button>
-                          <button onClick={() => { if (confirm("Are you sure?")) deleteMutation.mutate(project.id); }} className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
-                            {deleteMutation.isPending && deleteMutation.variables === project.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-                          </button>
+                      </div>
+                      
+                      <div className="pt-4 border-t border-gray-100 dark:border-white/10 flex items-center justify-between mt-auto">
+                        <div className="flex gap-4">
+                          {project.liveUrl ? (
+                            <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-sm font-semibold text-blue-500 hover:text-blue-600 flex items-center gap-1.5 transition-colors">
+                              <ExternalLink className="w-4 h-4" /> Live Demo
+                            </a>
+                          ) : (
+                            <span className="text-sm font-medium text-gray-400 dark:text-gray-600 flex items-center gap-1.5 cursor-not-allowed">
+                              <ExternalLink className="w-4 h-4" /> No Demo
+                            </span>
+                          )}
+                          
+                          {project.githubFrontendUrl || project.githubBackendUrl ? (
+                            <a href={project.githubFrontendUrl || project.githubBackendUrl} target="_blank" rel="noreferrer" className="text-sm font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1.5 transition-colors">
+                              <Code className="w-4 h-4" /> Source
+                            </a>
+                          ) : (
+                            <span className="text-sm font-medium text-gray-400 dark:text-gray-600 flex items-center gap-1.5 cursor-not-allowed">
+                              <Code className="w-4 h-4" /> No Code
+                            </span>
+                          )}
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {(!data?.data || data.data.length === 0) && (
-                    <tr>
-                      <td colSpan={4} className="p-8 text-center text-gray-500">
-                        No projects found. Add your first project!
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {(!data?.data || data.data.length === 0) && (
+                  <div className="col-span-full py-16 flex flex-col items-center justify-center bg-gray-50 dark:bg-white/5 rounded-3xl border border-dashed border-gray-200 dark:border-white/20">
+                    <div className="w-16 h-16 bg-white dark:bg-white/10 rounded-full flex items-center justify-center mb-4 shadow-sm">
+                      <Plus className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="text-lg font-medium text-gray-600 dark:text-gray-300">No projects found</p>
+                    <p className="text-sm text-gray-500 mt-1">Click the "Add Project" button to create your first portfolio project.</p>
+                  </div>
+                )}
+              </div>
+
             )}
           </div>
         </>

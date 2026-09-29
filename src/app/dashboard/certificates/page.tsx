@@ -83,7 +83,9 @@ export default function CertificatesDashboard({ hideHeader, onNext }: { hideHead
   const onSubmit = (formData: CreateCertificateDto) => {
     const dataToSubmit = {
       ...formData,
-      issueDate: formData.issueDate ? new Date(formData.issueDate).toISOString() : undefined
+      issueDate: formData.issueDate ? new Date(formData.issueDate).toISOString() : undefined,
+      credentialUrl: formData.credentialUrl === "" ? undefined : formData.credentialUrl,
+      image: formData.image === "" ? undefined : formData.image
     };
 
     if (editingId) {

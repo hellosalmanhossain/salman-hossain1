@@ -3,6 +3,20 @@ import { ProjectCategory } from './projectCategory';
 import { ProjectView } from './projectView';
 
 
+export interface ProjectScreenshot {
+  id?: string;
+  imageUrl: string;
+  title?: string;
+  description?: string;
+}
+
+export interface ProjectFeature {
+  id?: string;
+  icon?: string;
+  title?: string;
+  description?: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -21,6 +35,12 @@ export interface Project {
   impact?: string;
   startDate?: string;
   endDate?: string;
+  duration?: string;
+  statusText?: string;
+  overviewTitle?: string;
+  overviewDesc?: string;
+  projectScreenshots?: ProjectScreenshot[];
+  projectFeatures?: ProjectFeature[];
   featured: boolean;
   status: ProjectStatus;
   createdAt: string;
