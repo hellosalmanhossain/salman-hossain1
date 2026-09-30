@@ -82,10 +82,11 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
       setValue("liveUrl", project.liveUrl);
       setValue("videoUrl", project.videoUrl);
       setValue("technologies", project.technologies?.join(', ') as any);
-      setValue("features", project.features?.join(', ') as any);
       setValue("thumbnails", (project.thumbnails || []) as any);
       setValue("tags", project.tags?.join(', ') as any);
       setValue("role", project.role);
+      setValue("team", project.team);
+      setValue("impact", project.impact);
       setValue("startDate", project.startDate ? project.startDate.split('T')[0] : "");
       setValue("endDate", project.endDate ? project.endDate.split('T')[0] : "");
       setValue("status", project.status);
@@ -109,10 +110,11 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
         liveUrl: "",
         videoUrl: "",
         technologies: [],
-        features: [],
         thumbnails: [],
         tags: [],
         role: "",
+        team: "",
+        impact: "",
         status: "DRAFT" as any,
         projectType: "PERSONAL" as any,
         featured: false,
@@ -139,9 +141,6 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
       technologies: typeof formData.technologies === 'string' 
         ? (formData.technologies as string).split(',').map(t => t.trim()).filter(Boolean)
         : formData.technologies,
-      features: typeof formData.features === 'string'
-        ? (formData.features as string).split(',').map(t => t.trim()).filter(Boolean)
-        : formData.features,
       thumbnails: typeof formData.thumbnails === 'string'
         ? (formData.thumbnails as string).split(',').map(t => t.trim()).filter(Boolean)
         : formData.thumbnails,
@@ -268,9 +267,15 @@ export default function ProjectsDashboard({ hideHeader, onNext }: { hideHeader?:
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Features (comma separated)</label>
-              <textarea {...register("features")} rows={2} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Team (e.g. Solo Project)</label>
+                <input {...register("team")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Impact (e.g. 10k+ Users)</label>
+                <input {...register("impact")} className="w-full px-4 py-2 bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl focus:outline-none focus:border-blue-500" />
+              </div>
             </div>
             
             <div className="space-y-1">
