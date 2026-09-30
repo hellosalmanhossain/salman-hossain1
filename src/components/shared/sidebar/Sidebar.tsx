@@ -17,7 +17,7 @@ import {
   Layers
 } from "lucide-react";
 import Link from "next/link";
-import { ResumeButton } from "./ResumeButton";
+import { ResumeButton } from "@/components/shared/ResumeButton";
 import { useTheme } from "next-themes";
 import { useQuery } from "@tanstack/react-query";
 import { HeroSectionService } from "@/services/heroSection.service";
