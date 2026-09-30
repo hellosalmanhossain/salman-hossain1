@@ -33,7 +33,7 @@ export function ProjectCaseStudyModal({
           </div>
           <button 
             onClick={() => setIsModalOpen(false)}
-            className="p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white bg-black/5 dark:bg-white/5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            className="p-2 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white bg-black/5 dark:bg-white/5 rounded-none hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>

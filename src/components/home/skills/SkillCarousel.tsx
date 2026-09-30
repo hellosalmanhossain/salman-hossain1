@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export function SkillCarousel({ 
   skillCategories, 
@@ -48,8 +49,7 @@ export function SkillCarousel({
                   {/* Logo Box */}
                   <div className="flex-shrink-0 w-[56px] min-w-[56px] max-w-[56px] h-[56px] min-h-[56px] max-h-[56px] sm:w-[64px] sm:min-w-[64px] sm:max-w-[64px] sm:h-[64px] sm:min-h-[64px] sm:max-h-[64px] flex items-center justify-center bg-transparent rounded-none border border-black/20 dark:border-white/20 shadow-sm transition-all group-hover:border-black dark:group-hover:border-white">
                     {skill.icon.startsWith('http') ? (
-                       // eslint-disable-next-line @next/next/no-img-element
-                       <img src={skill.icon} alt={skill.name} className="w-8 h-8 sm:w-10 sm:h-10 object-contain grayscale group-hover:scale-110 transition-transform" />
+                       <Image src={skill.icon} alt={skill.name} width={40} height={40} className="w-8 h-8 sm:w-10 sm:h-10 object-contain grayscale group-hover:scale-110 transition-transform" />
                     ) : skill.icon.length > 2 && !skill.icon.includes('️') ? (
                        <span className="text-xs font-bold text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors">{skill.icon}</span>
                     ) : (

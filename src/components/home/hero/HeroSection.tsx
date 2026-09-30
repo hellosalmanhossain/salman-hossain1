@@ -83,20 +83,20 @@ export default function HeroSection() {
       <div className="absolute inset-0 z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
 
       {/* Decorative Background Orbs */}
-      <motion.div 
-        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} 
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} 
-        className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-[100px] pointer-events-none" 
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-[100px] pointer-events-none"
       />
-      <motion.div 
-        animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }} 
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
-        className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" 
+      <motion.div
+        animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none"
       />
 
       <div className="w-full h-full px-6 sm:px-10 lg:px-16 flex items-center justify-center z-10">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
-          <HeroLeftContent 
+          <HeroLeftContent
             hero={hero}
             currentDesignationIndex={currentDesignationIndex}
             containerVariants={containerVariants}

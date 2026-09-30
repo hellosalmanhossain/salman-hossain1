@@ -17,6 +17,7 @@ import {
   Layers
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { ResumeButton } from "@/components/shared/ResumeButton";
 import { useTheme } from "next-themes";
 import { useQuery } from "@tanstack/react-query";
@@ -255,7 +256,7 @@ export default function Sidebar() {
         <div className="flex items-center justify-between p-4 h-20 relative">
           <div className={`flex items-center gap-2 overflow-hidden whitespace-nowrap transition-opacity duration-300 ${isExpanded ? "opacity-100" : "opacity-0 w-0 hidden md:flex"}`}>
             {faviconUrl ? (
-              <img src={faviconUrl} alt="Site Logo" className="w-8 h-8 shrink-0 object-contain rounded-md" />
+              <Image src={faviconUrl} alt="Site Logo" width={32} height={32} className="w-8 h-8 shrink-0 object-contain rounded-md" />
             ) : (
               <div className="w-8 h-8 rounded bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white dark:text-black font-bold text-lg shrink-0 shadow-lg">
                 {initial}

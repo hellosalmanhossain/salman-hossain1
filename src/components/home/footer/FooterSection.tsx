@@ -27,7 +27,7 @@ export default function FooterSection() {
     <footer className="w-full relative overflow-hidden bg-gray-50/50 dark:bg-[#0A0A0A]/50 backdrop-blur-sm text-black dark:text-white transition-colors duration-300 z-10 pt-20 lg:pt-32 pb-24 md:pb-10 border-t border-black/5 dark:border-white/5">
       
       {/* Gigantic Background Text Watermark */}
-      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none opacity-[0.03] dark:opacity-[0.02]">
+      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-full text-center pointer-events-none opacity-[0.03] dark:opacity-10">
         <h1 className="text-[15vw] font-black tracking-tighter leading-none whitespace-nowrap select-none">
           SALMAN
         </h1>
@@ -50,10 +50,10 @@ export default function FooterSection() {
             {about?.email && (
               <a 
                 href={`mailto:${about.email}`}
-                className="group relative overflow-hidden px-10 py-5 bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm rounded-2xl flex items-center gap-4 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 shrink-0"
+                className="group relative overflow-hidden px-10 py-5 bg-black text-white dark:bg-white dark:text-black font-bold uppercase tracking-widest text-sm rounded-none flex items-center gap-4 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 shrink-0 border border-black dark:border-white"
               >
-                <span className="absolute inset-y-0 left-0 w-0 bg-primary transition-all duration-500 ease-out group-hover:w-full z-0" />
-                <span className="relative z-10 flex items-center gap-3 group-hover:text-white transition-colors duration-500">
+                <span className="absolute inset-y-0 left-0 w-0 bg-white dark:bg-black transition-all duration-500 ease-out group-hover:w-full z-0" />
+                <span className="relative z-10 flex items-center gap-3 group-hover:text-black dark:group-hover:text-white transition-colors duration-500">
                   <Mail className="w-5 h-5" />
                   Say Hello
                   <MoveRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />
@@ -146,7 +146,7 @@ export default function FooterSection() {
               © {currentYear} {about?.name || "Portfolio"}. All rights reserved.
             </p>
             <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 flex items-center gap-1">
-              Built with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 mx-1 animate-pulse" /> using Next.js & Tailwind
+              Designed & Developed with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500 mx-1 animate-pulse" /> by {about?.name || "Salman"}
             </p>
           </div>
 

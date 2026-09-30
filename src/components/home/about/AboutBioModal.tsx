@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Download, X } from "lucide-react";
 import { ResumeButton } from "../../shared/ResumeButton";
-
+import Image from "next/image";
 export function AboutBioModal({ data, setIsBioModalOpen }: { data: any; setIsBioModalOpen: (val: boolean) => void; }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6 lg:p-10">
@@ -18,7 +18,7 @@ export function AboutBioModal({ data, setIsBioModalOpen }: { data: any; setIsBio
         {/* Close Button */}
         <button 
           onClick={() => setIsBioModalOpen(false)}
-          className="absolute top-6 right-6 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-black dark:text-white backdrop-blur-md transition-all duration-300 hover:rotate-90 hover:scale-110"
+          className="absolute top-6 right-6 z-50 w-12 h-12 flex items-center justify-center rounded-none bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-black dark:text-white backdrop-blur-md transition-all duration-300 hover:rotate-90 hover:scale-110"
         >
           <X className="w-6 h-6" />
         </button>
@@ -29,11 +29,13 @@ export function AboutBioModal({ data, setIsBioModalOpen }: { data: any; setIsBio
           <div className="w-full lg:w-2/5 h-[40vh] lg:h-full relative overflow-hidden bg-gray-100 dark:bg-[#111]">
             {data.profileImage ? (
               <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
+
+                <Image 
                   src={data.profileImage} 
-                  alt={data.name} 
-                  className="w-full h-full object-cover filter grayscale mix-blend-multiply dark:mix-blend-luminosity opacity-80"
+                  alt={data.name || "Profile"} 
+                  fill
+                  className="object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white via-white/50 to-transparent dark:from-[#0A0A0A] dark:via-[#0A0A0A]/50 dark:to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-white/20 lg:to-white dark:lg:via-[#0A0A0A]/20 dark:lg:to-[#0A0A0A]" />
               </>
@@ -102,10 +104,10 @@ export function AboutBioModal({ data, setIsBioModalOpen }: { data: any; setIsBio
                 {data.resumeUrl && (
                    <ResumeButton 
                      url={data.resumeUrl}
-                     className="group relative overflow-hidden px-8 py-4 bg-black text-white dark:bg-white dark:text-black rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:shadow-2xl"
+                     className="group relative overflow-hidden px-8 py-4 bg-white text-black dark:bg-white/10 dark:text-white border border-black/10 dark:border-white/20 rounded-none text-xs font-bold uppercase tracking-widest transition-all duration-500 hover:shadow-xl"
                    >
-                     <span className="absolute inset-y-0 left-0 w-0 bg-primary transition-all duration-500 ease-out group-hover:w-full z-0" />
-                     <span className="relative z-10 flex items-center gap-2">
+                     <span className="absolute inset-y-0 left-0 w-0 bg-black dark:bg-white transition-all duration-500 ease-out group-hover:w-full z-0" />
+                     <span className="relative z-10 flex items-center gap-2 group-hover:text-white dark:group-hover:text-black transition-colors duration-500">
                        View Resume <Download className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
                      </span>
                    </ResumeButton>

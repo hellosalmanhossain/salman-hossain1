@@ -10,7 +10,19 @@ const nextConfig: NextConfig = {
         source: '/api/v1/:path*',
         destination: `${apiOrigin}/api/v1/:path*`,
       },
-    ]
+    ];
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
+      },
+    ],
   },
 };
 

@@ -68,12 +68,12 @@ export default function ProjectsSection() {
             </div>
 
             {/* Filter Pills */}
-            <div className="flex bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-full p-1 shadow-sm dark:shadow-none shrink-0">
+            <div className="flex bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-none p-1 shadow-sm dark:shadow-none shrink-0">
               {(["ALL", "PRODUCTION", "PERSONAL"] as const).map((f) => (
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
-                  className={`px-4 lg:px-6 py-1.5 lg:py-2 rounded-full text-[10px] lg:text-xs font-bold tracking-wider transition-all flex items-center gap-2 ${
+                  className={`px-4 lg:px-6 py-1.5 lg:py-2 rounded-none text-[10px] lg:text-xs font-bold tracking-wider transition-all flex items-center gap-2 ${
                     filter === f 
                       ? "bg-black text-white dark:bg-white/10 dark:text-white" 
                       : "text-gray-500 hover:text-black dark:text-gray-500 dark:hover:text-gray-300"
@@ -86,23 +86,34 @@ export default function ProjectsSection() {
             </div>
           </div>
 
-          {/* Project Tabs */}
-          <ProjectTabs 
-            filteredProjects={filteredProjects} 
-            activeProjectId={activeProjectId} 
-            setActiveProjectId={setActiveProjectId} 
-          />
-
-          {/* Active Project Details */}
-          <AnimatePresence mode="wait">
-            {activeProject && (
-              <ProjectDetailsCard 
-                activeProject={activeProject}
-                filteredProjects={filteredProjects}
-                setIsModalOpen={setIsModalOpen}
+          {filteredProjects.length > 0 ? (
+            <>
+              {/* Project Tabs */}
+              <ProjectTabs 
+                filteredProjects={filteredProjects} 
+                activeProjectId={activeProjectId} 
+                setActiveProjectId={setActiveProjectId} 
               />
-            )}
-          </AnimatePresence>
+
+              {/* Active Project Details */}
+              <AnimatePresence mode="wait">
+                {activeProject && (
+                  <ProjectDetailsCard 
+                    activeProject={activeProject}
+                    filteredProjects={filteredProjects}
+                    setIsModalOpen={setIsModalOpen}
+                  />
+                )}
+              </AnimatePresence>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 w-full">
+              <h3 className="text-xl font-bold mb-2">No projects yet</h3>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                There are currently no projects available in this category. Please check back later or explore other categories.
+              </p>
+            </div>
+          )}
 
         </div>
       </div>

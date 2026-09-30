@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Building2, Calendar, ArrowRight, GraduationCap, Award, ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 export function ExperienceDetails({ 
   activeCategory, 
@@ -87,8 +88,7 @@ export function ExperienceDetails({
               
               {activeEdu.image && (
                 <div className="shrink-0 bg-white dark:bg-[#111] p-2 rounded-xl border border-black/10 dark:border-white/10 shadow-sm">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={activeEdu.image} alt={activeEdu.institute} className="w-16 h-16 lg:w-20 lg:h-20 object-contain rounded-lg" />
+                  <Image src={activeEdu.image} alt={activeEdu.institute} width={80} height={80} className="w-16 h-16 lg:w-20 lg:h-20 object-contain rounded-lg" />
                 </div>
               )}
             </div>
@@ -117,13 +117,14 @@ export function ExperienceDetails({
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 h-full">
               
               {/* Left: Certificate Image */}
-              <div className="w-full flex items-center justify-center bg-gray-50 dark:bg-[#111] rounded-xl border border-black/5 dark:border-white/5 p-4 lg:p-6 h-[250px] lg:h-auto overflow-hidden group">
+              <div className="relative w-full flex items-center justify-center bg-gray-50 dark:bg-[#111] rounded-none border border-black/5 dark:border-white/5 p-4 lg:p-6 h-[250px] lg:h-auto overflow-hidden group">
                 {activeCert.image ? (
-                   // eslint-disable-next-line @next/next/no-img-element
-                   <img 
+                   <Image 
                      src={activeCert.image} 
                      alt={activeCert.title} 
-                     className="w-full h-full object-contain rounded shadow-sm group-hover:scale-105 transition-transform duration-500" 
+                     fill
+                     className="object-contain p-4 lg:p-6 rounded-none shadow-sm group-hover:scale-105 transition-transform duration-500" 
+                     sizes="(max-width: 1024px) 100vw, 50vw"
                    />
                 ) : (
                   <div className="flex flex-col items-center justify-center text-gray-400 dark:text-gray-600 gap-4">
@@ -165,10 +166,10 @@ export function ExperienceDetails({
                       href={activeCert.credentialUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="group relative overflow-hidden w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:shadow-lg"
+                      className="group relative overflow-hidden w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black border border-black/10 dark:border-white/20 rounded-none text-xs font-bold uppercase tracking-widest transition-all duration-500 hover:shadow-lg"
                     >
-                      <span className="absolute inset-y-0 left-0 w-0 bg-black/10 dark:bg-white/10 transition-all duration-300 ease-out group-hover:w-full z-0" />
-                      <span className="relative z-10 flex items-center gap-2">
+                      <span className="absolute inset-y-0 left-0 w-0 bg-black transition-all duration-500 ease-out group-hover:w-full z-0" />
+                      <span className="relative z-10 flex items-center gap-2 group-hover:text-white transition-colors duration-500">
                         Verify Credential <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
                       </span>
                     </a>

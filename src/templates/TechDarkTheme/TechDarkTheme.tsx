@@ -1,18 +1,21 @@
 import React from "react";
 import { motion } from "framer-motion";
 import PixelSnow from "./components/PixelSnow";
-import Hero from "@/components/home/hero/HeroSection";
-import About from "@/components/home/about/AboutSection";
-import TechSphere from "@/components/home/skills/SkillsSection";
-import Experience from "@/components/home/experience/ExperienceSection";
-import Projects from "@/components/home/projects/ProjectsSection";
-import Blog from "@/components/home/blog/BlogSection";
-import Contact from "@/components/home/contact/ContactSection";
-import Footer from "@/components/home/footer/FooterSection";
 import TargetCursor from "./components/TargetCursor";
-import Services from "@/components/home/services/ServicesSection";
+import Hero from "@/components/home/hero/HeroSection";
 import Sidebar from "@/components/shared/sidebar/Sidebar";
 import ScrollToTop from "./components/ScrollToTop";
+import dynamic from "next/dynamic";
+
+const About = dynamic(() => import("@/components/home/about/AboutSection"));
+const TechSphere = dynamic(() => import("@/components/home/skills/SkillsSection"));
+const Experience = dynamic(() => import("@/components/home/experience/ExperienceSection"));
+const Projects = dynamic(() => import("@/components/home/projects/ProjectsSection"));
+const Blog = dynamic(() => import("@/components/home/blog/BlogSection"));
+const Contact = dynamic(() => import("@/components/home/contact/ContactSection"));
+const Footer = dynamic(() => import("@/components/home/footer/FooterSection"));
+const Services = dynamic(() => import("@/components/home/services/ServicesSection"));
+
 
 export default function TechDarkTheme({ websiteData, isLight, mounted }: any) {
   return (

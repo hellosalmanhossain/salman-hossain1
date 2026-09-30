@@ -7,19 +7,19 @@ import { ResumeButton } from "../../shared/ResumeButton";
 import { AnimatedCounter } from "../../shared/AnimatedCounter";
 import { ContactAnimation } from "./ContactAnimation";
 
-export function HeroLeftContent({ 
-  hero, 
-  currentDesignationIndex, 
-  containerVariants, 
-  fadeUpVariants, 
-  textRevealVariants, 
-  letterVariants 
-}: { 
-  hero: any; 
-  currentDesignationIndex: number; 
-  containerVariants: any; 
-  fadeUpVariants: any; 
-  textRevealVariants: any; 
+export function HeroLeftContent({
+  hero,
+  currentDesignationIndex,
+  containerVariants,
+  fadeUpVariants,
+  textRevealVariants,
+  letterVariants
+}: {
+  hero: any;
+  currentDesignationIndex: number;
+  containerVariants: any;
+  fadeUpVariants: any;
+  textRevealVariants: any;
   letterVariants: any;
 }) {
   return (
@@ -31,9 +31,9 @@ export function HeroLeftContent({
     >
       {/* Dynamic Designation Badge */}
       {hero?.designations && hero.designations.length > 0 && (
-        <motion.div variants={fadeUpVariants} className="mb-6 lg:mb-8 mt-4 lg:mt-0">
-          <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-full border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 backdrop-blur-sm min-h-[40px]">
-            <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse shrink-0" />
+        <motion.div variants={fadeUpVariants} className="mb-6 lg:mb-8 mt-4 lg:mt-2">
+          <div className="inline-flex items-center gap-3 px-4 py-2.5 rounded-none border border-black/20 dark:border-white/20 bg-black/5 dark:bg-white/5 backdrop-blur-sm min-h-[40px]">
+            <div className="w-2 h-2 rounded-none bg-black dark:bg-white animate-pulse shrink-0" />
             <div className="flex items-center justify-start overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -56,7 +56,7 @@ export function HeroLeftContent({
       <div className="overflow-hidden mb-6 w-full perspective-[1000px]">
         <motion.h1 variants={textRevealVariants} className="text-5xl sm:text-7xl lg:text-[5.5rem] font-black tracking-tighter leading-[0.95] text-black dark:text-white">
           <span className="block text-gray-600 dark:text-gray-400 font-medium tracking-normal text-2xl sm:text-3xl mb-4 ml-1">Hello, I am</span>
-          <span className="inline-flex flex-wrap gap-x-4 -ml-[0.08em]">
+          <span className="inline-flex flex-wrap justify-center lg:justify-start w-full lg:w-auto gap-x-4 -ml-[0.08em]">
             {(hero?.heroTitle || "Salman Hossain").split(' ').map((word: string, i: number) => (
               <span key={i} className="inline-flex overflow-hidden">
                 {word.split('').map((char: string, j: number) => (
@@ -74,7 +74,7 @@ export function HeroLeftContent({
         </motion.h1>
       </div>
 
-      <div className="overflow-hidden mb-10 w-full max-w-2xl">
+      <div className="overflow-hidden mb-10 w-full max-w-2xl text-left">
         <motion.p variants={textRevealVariants} className="text-gray-600 dark:text-gray-400 text-base sm:text-lg lg:text-xl leading-relaxed font-light">
           {hero?.heroDescription || "I build robust backend systems and beautiful web applications."}
         </motion.p>

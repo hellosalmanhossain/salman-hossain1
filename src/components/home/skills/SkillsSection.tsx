@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { SkillService } from "@/services/skill.service";
-import { SkillGlobe } from "./SkillGlobe";
+import dynamic from "next/dynamic";
+const SkillGlobe = dynamic(() => import("./SkillGlobe").then(mod => mod.SkillGlobe), { ssr: false });
 import { SkillCarousel } from "./SkillCarousel";
 
 export default function SkillsSection() {
@@ -60,28 +61,28 @@ export default function SkillsSection() {
       <div className="w-full px-6 sm:px-10 lg:px-16 z-10 relative">
         <div className="max-w-[1400px] mx-auto w-full">
 
-        <div className="flex flex-col gap-2 mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white">
-            Technical Skills
-          </h2>
-          <div className="w-16 h-1 bg-black dark:bg-white rounded-full" />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-
-          {/* Left Side: 3D Earth */}
-          <div className="order-2 lg:order-1 flex justify-center items-center w-full">
-            <SkillGlobe apiSkills={apiSkills} />
+          <div className="flex flex-col gap-2 mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black dark:text-white">
+              Technical Skills
+            </h2>
+            <div className="w-16 h-1 bg-black dark:bg-white rounded-full" />
           </div>
 
-          {/* Right Side: Categorized Skills Carousel */}
-          <SkillCarousel 
-            skillCategories={skillCategories} 
-            activeIndex={activeIndex} 
-            setActiveIndex={setActiveIndex} 
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
 
-        </div>
+            {/* Left Side: 3D Earth */}
+            <div className="order-2 lg:order-1 flex justify-center items-center w-full">
+              <SkillGlobe apiSkills={apiSkills} />
+            </div>
+
+            {/* Right Side: Categorized Skills Carousel */}
+            <SkillCarousel
+              skillCategories={skillCategories}
+              activeIndex={activeIndex}
+              setActiveIndex={setActiveIndex}
+            />
+
+          </div>
         </div>
       </div>
     </section>
