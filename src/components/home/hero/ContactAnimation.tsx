@@ -17,7 +17,7 @@ export function ContactAnimation({ socialLinks, fadeUpVariants }: { socialLinks:
           <div
             key={idx}
             style={{ transitionDelay: `${idx * 50}ms` }}
-            className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] flex items-center justify-center border border-black/10 dark:border-white/10 shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-100 scale-100 rotate-0 group-hover:opacity-0 group-hover:scale-50 group-hover:-rotate-90 group-hover:-translate-y-8"
+            className="hidden lg:flex w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] items-center justify-center border border-black/10 dark:border-white/10 shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] lg:opacity-100 lg:scale-100 lg:rotate-0 lg:group-hover:opacity-0 lg:group-hover:scale-50 lg:group-hover:-rotate-90 lg:group-hover:-translate-y-8"
           >
             <span className="text-black dark:text-white font-black text-sm">{letter}</span>
           </div>
@@ -38,7 +38,7 @@ export function ContactAnimation({ socialLinks, fadeUpVariants }: { socialLinks:
                 target="_blank"
                 rel="noreferrer"
                 style={{ transitionDelay: `${i * 50}ms` }}
-                className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-0 scale-50 rotate-90 translate-y-8 group-hover:opacity-100 group-hover:scale-100 group-hover:rotate-0 group-hover:translate-y-0 hover:!scale-125 overflow-hidden"
+                className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-100 scale-100 rotate-0 translate-y-0 lg:opacity-0 lg:scale-50 lg:rotate-90 lg:translate-y-8 lg:group-hover:opacity-100 lg:group-hover:scale-100 lg:group-hover:rotate-0 lg:group-hover:translate-y-0 hover:!scale-125 overflow-hidden"
               >
                 {link.iconUrl ? (
                   <Image src={link.iconUrl} alt={link.platform} width={40} height={40} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" unoptimized />
@@ -54,7 +54,7 @@ export function ContactAnimation({ socialLinks, fadeUpVariants }: { socialLinks:
             <div
               key={i}
               style={{ transitionDelay: `${i * 50}ms` }}
-              className="w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] border border-black/10 dark:border-white/10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] opacity-0 scale-50 rotate-90 translate-y-8 group-hover:opacity-100 group-hover:scale-100 group-hover:rotate-0 group-hover:translate-y-0 pointer-events-none"
+              className="hidden lg:block w-10 h-10 rounded-xl bg-gray-200 dark:bg-[#1A1A1A] border border-black/10 dark:border-white/10 transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] lg:opacity-0 lg:scale-50 lg:rotate-90 lg:translate-y-8 lg:group-hover:opacity-100 lg:group-hover:scale-100 lg:group-hover:rotate-0 lg:group-hover:translate-y-0 pointer-events-none"
             />
           );
         })}

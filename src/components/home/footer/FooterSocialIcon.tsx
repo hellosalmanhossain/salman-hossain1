@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Mail, MessageCircle } from "lucide-react";
 
 export const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -21,10 +21,31 @@ export const TwitterIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+export const DiscordIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="9" cy="12" r="1"></circle>
+    <circle cx="15" cy="12" r="1"></circle>
+    <path d="M7.5 7.5c3.5-1 5.5-1 9 0"></path>
+    <path d="M7 16.5c3.5 1 6.5 1 10 0"></path>
+    <path d="M15.5 17c0 1 1.5 3 2 3 .5 0 2.5-2 3-4 1-5 0-10-4-12-1 0-2 1-3 1.5-1.5-.5-3.5-.5-5 0-1-.5-2-1.5-3-1.5-4 2-5 7-4 12 .5 2 2.5 4 3 4 .5 0 2-2 2-3"></path>
+  </svg>
+);
+
+export const FacebookIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+  </svg>
+);
+
 export const SocialIcon = ({ platform }: { platform: string }) => {
   const normalized = platform.toLowerCase();
   if (normalized.includes('github')) return <GithubIcon className="w-5 h-5" />;
   if (normalized.includes('linkedin')) return <LinkedinIcon className="w-5 h-5" />;
-  if (normalized.includes('twitter') || normalized.includes('x')) return <TwitterIcon className="w-5 h-5" />;
+  if (normalized.includes('twitter') || normalized.includes('twiter') || normalized.includes('x')) return <TwitterIcon className="w-5 h-5" />;
+  if (normalized.includes('facebook')) return <FacebookIcon className="w-5 h-5" />;
+  if (normalized.includes('gmail') || normalized.includes('mail')) return <Mail className="w-5 h-5" />;
+  if (normalized.includes('discord')) return <DiscordIcon className="w-5 h-5" />;
+  if (normalized.includes('what') || normalized.includes('whatsapp')) return <MessageCircle className="w-5 h-5" />;
+  
   return <ExternalLink className="w-5 h-5" />;
 };

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, Users, Activity } from "lucide-react";
+import Image from "next/image";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -37,11 +38,12 @@ export function ProjectDetailsCard({
         </div>
         <div className="flex-1 bg-gray-200/50 dark:bg-black/50 p-4 relative min-h-[180px] lg:min-h-[220px]">
           {activeProject.thumbnails?.[0] ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img 
+            <Image 
               src={activeProject.thumbnails[0]} 
               alt={activeProject.title}
-              className="w-full h-full object-cover rounded-lg border border-black/10 dark:border-white/10"
+              fill
+              className="object-cover rounded-lg border border-black/10 dark:border-white/10"
+              sizes="(max-width: 1024px) 100vw, 50vw"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-white/20 border border-black/10 dark:border-white/5 rounded-lg">
@@ -133,7 +135,7 @@ export function ProjectDetailsCard({
                 href={activeProject.liveUrl} 
                 target="_blank" 
                 rel="noreferrer"
-                className="group relative overflow-hidden w-full py-2.5 lg:py-3 bg-primary text-primary-foreground font-bold text-[10px] lg:text-xs uppercase tracking-widest rounded flex items-center justify-center transition-all duration-500 border-2 border-primary"
+                className="group relative overflow-hidden w-full py-2.5 lg:py-3 bg-primary text-primary-foreground font-bold text-[10px] lg:text-xs uppercase tracking-widest rounded-none flex items-center justify-center transition-all duration-500 border-2 border-primary"
               >
                 <span className="absolute inset-y-0 left-0 w-0 bg-black dark:bg-white transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-full z-0" />
                 <span className="relative z-10 flex items-center gap-2 group-hover:text-white dark:group-hover:text-black transition-colors duration-500">
@@ -143,7 +145,7 @@ export function ProjectDetailsCard({
             )}
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="group relative overflow-hidden w-full py-2.5 lg:py-3 border-2 border-black dark:border-white text-black dark:text-white font-bold text-[10px] lg:text-xs uppercase tracking-widest rounded flex items-center justify-center transition-all duration-500"
+              className="group relative overflow-hidden w-full py-2.5 lg:py-3 border-2 border-black dark:border-white text-black dark:text-white font-bold text-[10px] lg:text-xs uppercase tracking-widest rounded-none flex items-center justify-center transition-all duration-500"
             >
               <span className="absolute inset-y-0 left-0 w-0 bg-black dark:bg-white transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-full z-0" />
               <span className="relative z-10 flex items-center gap-2 group-hover:text-white dark:group-hover:text-black transition-colors duration-500">

@@ -72,7 +72,7 @@ export default function ExperienceSection() {
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-full p-1 shadow-sm dark:shadow-none shrink-0 overflow-x-auto no-scrollbar w-full lg:w-auto">
+            <div className="flex bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 rounded-none p-1 shadow-sm dark:shadow-none shrink-0 overflow-x-auto no-scrollbar w-full lg:w-auto">
               {(["EXPERIENCE", "EDUCATION", "CERTIFICATES"] as const).map((cat) => {
                 // Don't show category if no data exists
                 if (cat === "EXPERIENCE" && experiences.length === 0) return null;
@@ -90,7 +90,7 @@ export default function ExperienceSection() {
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`px-4 lg:px-6 py-2 lg:py-2.5 rounded-full text-[10px] lg:text-xs font-bold tracking-wider transition-all flex items-center gap-2 shrink-0 ${
+                    className={`px-4 lg:px-6 py-2 lg:py-2.5 rounded-none text-[10px] lg:text-xs font-bold tracking-wider transition-all flex items-center gap-2 shrink-0 ${
                       activeCategory === cat 
                         ? "bg-black text-white dark:bg-white/10 dark:text-white" 
                         : "text-gray-500 hover:text-black dark:text-gray-500 dark:hover:text-gray-300"

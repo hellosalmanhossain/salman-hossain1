@@ -2,17 +2,20 @@
 
 import { motion } from "framer-motion";
 
+import Image from "next/image";
+
 export function AboutImage({ data, fadeUp }: { data: any; fadeUp: any }) {
   return (
     <motion.div variants={fadeUp} className="relative group">
       {data.profileImage && (
         <div className="relative w-full aspect-[4/5] max-w-md mx-auto lg:mx-0 overflow-hidden bg-gray-100 dark:bg-[#111]">
           <div className="absolute inset-0 bg-black/5 dark:bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10 mix-blend-overlay" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
+          <Image 
             src={data.profileImage} 
-            alt={data.name} 
-            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100" 
+            alt={data.name || "Profile"} 
+            fill
+            className="object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+            sizes="(max-width: 768px) 100vw, 400px"
           />
           
           {/* Decorative Elements */}
