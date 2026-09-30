@@ -1,17 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
 import PixelSnow from "./components/PixelSnow";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import TechSphere from "./components/Skills";
-import Experience from "./components/Experience";
-import Projects from "./components/Projects";
-import Blog from "./components/Blog";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import Hero from "@/components/home/hero/HeroSection";
+import About from "@/components/home/about/AboutSection";
+import TechSphere from "@/components/home/skills/SkillsSection";
+import Experience from "@/components/home/experience/ExperienceSection";
+import Projects from "@/components/home/projects/ProjectsSection";
+import Blog from "@/components/home/blog/BlogSection";
+import Contact from "@/components/home/contact/ContactSection";
+import Footer from "@/components/home/footer/FooterSection";
 import TargetCursor from "./components/TargetCursor";
-import Services from "./components/Services";
-import Sidebar from "./components/Sidebar";
+import Services from "@/components/home/services/ServicesSection";
+import Sidebar from "@/components/shared/sidebar/Sidebar";
 import ScrollToTop from "./components/ScrollToTop";
 
 export default function TechDarkTheme({ websiteData, isLight, mounted }: any) {

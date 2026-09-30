@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import PixelSnow from "./components/PixelSnow";
 import TargetCursor from "./components/TargetCursor";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "@/components/shared/sidebar/Sidebar";
 import ScrollToTop from "./components/ScrollToTop";
-import Footer from "./components/Footer";
+import Footer from "@/components/home/footer/FooterSection";
 import Preloader from "@/components/Preloader";
 import AboutPage from "./components/AboutPage";
 

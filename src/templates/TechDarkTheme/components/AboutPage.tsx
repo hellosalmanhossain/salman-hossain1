@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { ResumeModal } from "./ResumeModal";
+import { ResumeModal } from "@/components/shared/ResumeModal";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
