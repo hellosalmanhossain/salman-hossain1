@@ -22,16 +22,16 @@ export default function SeoSettingsDashboard({ hideHeader, onNext }: { hideHeade
 
   useEffect(() => {
     if (seoData) {
-      setValue("siteName", seoData.siteName);
-      setValue("metaTitle", seoData.metaTitle);
-      setValue("metaDescription", seoData.metaDescription);
+      setValue("siteName", seoData.siteName || "");
+      setValue("metaTitle", seoData.metaTitle || "");
+      setValue("metaDescription", seoData.metaDescription || "");
       setValue("metaKeywords", (seoData.metaKeywords || []).join(', ') as any);
-      setValue("author", seoData.author);
-      setValue("favicon", seoData.favicon);
-      setValue("ogTitle", seoData.ogTitle);
-      setValue("ogDescription", seoData.ogDescription);
-      setValue("ogImage", seoData.ogImage);
-      setValue("twitterCard", seoData.twitterCard);
+      setValue("author", seoData.author || "");
+      setValue("favicon", seoData.favicon || "");
+      setValue("ogTitle", seoData.ogTitle || "");
+      setValue("ogDescription", seoData.ogDescription || "");
+      setValue("ogImage", seoData.ogImage || "");
+      setValue("twitterCard", seoData.twitterCard || "");
     }
   }, [seoData, setValue]);
 
@@ -53,9 +53,15 @@ export default function SeoSettingsDashboard({ hideHeader, onNext }: { hideHeade
   const onSubmit = (formData: CreateSeoSettingDto) => {
     const payload = {
       ...formData,
-      metaKeywords: (formData.metaKeywords as unknown as string).split(',').map(s => s.trim()).filter(Boolean)
+      metaKeywords: formData.metaKeywords ? (formData.metaKeywords as unknown as string).split(',').map(s => s.trim()).filter(Boolean) : []
     };
-    updateMutation.mutate(payload as CreateSeoSettingDto);
+
+    // Remove any null or empty string values that might fail Zod validation
+    const cleanedPayload = Object.fromEntries(
+      Object.entries(payload).map(([k, v]) => [k, (v === null || v === "") ? undefined : v])
+    );
+
+    updateMutation.mutate(cleanedPayload as CreateSeoSettingDto);
   };
 
   if (isLoading) {
