@@ -12,26 +12,38 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
   
   useEffect(() => {
     setMounted(true);
+    // Hide body overflow to prevent scroll chaining
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
   }, []);
 
-  const isCloudinaryPdf = url.includes('cloudinary.com') && url.endsWith('.pdf');
-  // By changing .pdf to .png, cloudinary automatically returns the first page of the pdf as an image
-  const imageUrl = isCloudinaryPdf ? url.replace('.pdf', '.png') : url;
-
+  const isPdf = url.toLowerCase().includes('.pdf');
+  
   const handleWheel = (e: React.WheelEvent) => {
-    // Only zoom if ctrl/cmd is pressed to match standard behavior, or just always zoom
-    setScale(prev => Math.min(Math.max(0.5, prev - e.deltaY * 0.005), 4));
+    if (!isPdf) {
+      setScale(prev => Math.min(Math.max(0.5, prev - e.deltaY * 0.005), 4));
+    }
   };
 
   if (!mounted) return null;
 
   return createPortal(
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-8"
-    >
+    <>
+      <style>{`
+        .target-cursor-wrapper { display: none !important; }
+        * { cursor: auto !important; }
+        a, button, [role="button"], .cursor-pointer,
+        a *, button *, [role="button"] *, .cursor-pointer * { cursor: pointer !important; }
+      `}</style>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-2 sm:p-8"
+      >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -42,10 +54,10 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
         <div className="flex items-center justify-between p-3 sm:p-4 border-b border-black/10 dark:border-white/10 bg-gray-100 dark:bg-[#151515] z-10">
           <h3 className="text-black dark:text-white font-semibold flex items-center gap-2">
             Resume
-            <span className="text-gray-600 dark:text-gray-500 text-xs font-normal ml-2 hidden sm:inline-block">Scroll to zoom, drag to move</span>
+            {!isPdf && <span className="text-gray-600 dark:text-gray-500 text-xs font-normal ml-2 hidden sm:inline-block">Scroll to zoom, drag to move</span>}
           </h3>
           <div className="flex items-center gap-3 sm:gap-4">
-            {isCloudinaryPdf && (
+            {!isPdf && (
               <div className="flex items-center gap-1 sm:gap-2 mr-2 bg-black/5 dark:bg-white/5 p-1">
                 <button onClick={() => setScale(s => Math.max(0.5, s - 0.2))} className="cursor-pointer p-1.5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
                   <ZoomOut className="w-4 h-4" />
@@ -67,18 +79,22 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
 
         {/* Viewer */}
         <div
-          className="flex-1 w-full h-full overflow-hidden cursor-grab active:cursor-grabbing relative flex items-center justify-center bg-gray-200 dark:bg-[#0a0a0a]"
+          className={`flex-1 w-full h-full overflow-hidden relative flex items-center justify-center bg-gray-200 dark:bg-[#0a0a0a] ${!isPdf ? 'cursor-grab active:cursor-grabbing' : ''}`}
           onWheel={handleWheel}
         >
-          {isCloudinaryPdf ? (
+          {isPdf ? (
+            <div className="w-full h-full relative">
+              <iframe src={url} className="w-full h-full border-0 bg-white" title="Resume" />
+            </div>
+          ) : (
             <motion.div
               drag
               dragMomentum={false}
               style={{ scale }}
-              className="relative w-full max-w-[800px] h-[80%] sm:h-full sm:aspect-[1/1.414] shadow-2xl pointer-events-auto origin-center"
+              className="relative w-full max-w-[800px] h-[80%] sm:h-full sm:aspect-[1/1.414] shadow-2xl pointer-events-auto origin-center bg-white dark:bg-[#1a1a1a]"
             >
               <Image
-                src={imageUrl}
+                src={url}
                 alt="Resume"
                 fill
                 className="object-contain pointer-events-none select-none"
@@ -86,12 +102,11 @@ export function ResumeModal({ url, onClose }: { url: string, onClose: () => void
                 draggable={false}
               />
             </motion.div>
-          ) : (
-            <iframe src={`${url}#toolbar=0&navpanes=0&scrollbar=0`} className="w-full h-full border-0 bg-white" title="Resume" />
           )}
         </div>
       </motion.div>
-    </motion.div>,
+    </motion.div>
+    </>,
     document.body
   );
 }
