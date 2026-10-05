@@ -1,10 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download, X } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
 import { ResumeButton } from "../../shared/ResumeButton";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { HeroSectionService } from "@/services/heroSection.service";
+
 export function AboutBioModal({ data, setIsBioModalOpen }: { data: any; setIsBioModalOpen: (val: boolean) => void; }) {
+  const { data: heroData } = useQuery({
+    queryKey: ["hero"],
+    queryFn: () => HeroSectionService.getHeroSection(),
+  });
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6 lg:p-10">
       <motion.div
@@ -101,16 +109,8 @@ export function AboutBioModal({ data, setIsBioModalOpen }: { data: any; setIsBio
                   </a>
                 </div>
                 
-                {data.resumeUrl && (
-                   <ResumeButton 
-                     url={data.resumeUrl}
-                     className="group relative overflow-hidden px-8 py-4 bg-white text-black dark:bg-white/10 dark:text-white border border-black/10 dark:border-white/20 rounded-none text-xs font-bold uppercase tracking-widest transition-all duration-500 hover:shadow-xl"
-                   >
-                     <span className="absolute inset-y-0 left-0 w-0 bg-black dark:bg-white transition-all duration-500 ease-out group-hover:w-full z-0" />
-                     <span className="relative z-10 flex items-center gap-2 group-hover:text-white dark:group-hover:text-black transition-colors duration-500">
-                       View Resume <Download className="w-4 h-4 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
-                     </span>
-                   </ResumeButton>
+                {heroData?.data?.resumeUrl && (
+                   <ResumeButton url={heroData.data.resumeUrl} />
                 )}
               </div>
             )}
